@@ -47,7 +47,7 @@ async def main():
     public_agent_card = AgentCard(
         name='News Agent',
         description='An agent that fetches news from an external MCP server for a specific list of countries.',
-        url='http://localhost:3001',
+        url='https://externalagent1-server.onrender.com',
         version='1.0.0',
         default_input_modes=['text'],
         default_output_modes=['text'],
