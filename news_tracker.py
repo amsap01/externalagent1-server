@@ -27,7 +27,12 @@ class NewsTracker:
 
     async def update_all_news(self):
         for country in self.countries:
-            query = f"Latest financial news about {country}"
+            async with self._lock:
+                news_count = len(self.news[country])
+            if news_count >= 3:
+                logger.info(f"Skipping fetch for {country}: already have 3 news items.")
+                continue
+            query = f"Latest financial news about {country} that will affect tarriffs and trade policies with {country}"
             try:
                 news = await self.agent.fetch_news(query)
                 logger.info(f"Fetched news for {country}: {news}")
@@ -38,15 +43,6 @@ class NewsTracker:
                 if news and news not in self.news[country]:
                     self.news[country].append(news)
                     logger.info(f"Stored news for {country}: {self.news[country]}")
-                # If there is news, increment missed_cycles
-                if self.news[country]:
-                    self.missed_cycles[country] += 1
-                    if self.missed_cycles[country] >= 3:
-                        logger.info(f"Expiring news for {country} after 3 missed cycles.")
-                        self.news[country] = []
-                        self.missed_cycles[country] = 0
-                else:
-                    self.missed_cycles[country] = 0
             logger.info(f"Updated news for {country}")
         # Log the full tracking list after all updates
         logger.info(f"Current tracking list: {self.news}")

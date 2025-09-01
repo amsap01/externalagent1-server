@@ -36,18 +36,17 @@ async def main():
         description='Searches external sources for information using an MCP server. Useful for retrieving up-to-date financial and business news from around the world.(Currently supports a fixed list of countries)',
         tags=['search','finance', 'news'],
         examples=[
-            'Japan',
-            'Germany',
-            'Brazil',
-            'Switzerland',
-            'India',
+            'China',
+            'Indonesia',
+            'Malaysia',
+            'Vietnam',
         ],
     )
 
     public_agent_card = AgentCard(
         name='News Agent',
         description='An agent that fetches news from an external MCP server for a specific list of countries.',
-        url='https://externalagent1-server.onrender.com',
+        url='http://localhost:3001',
         version='1.0.0',
         default_input_modes=['text'],
         default_output_modes=['text'],
